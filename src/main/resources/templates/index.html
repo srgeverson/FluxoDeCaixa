@@ -1,0 +1,141 @@
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="'Geverson Souza">
+<meta name="description" content="Fluxo de Caixa">
+
+<link href="bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="fontawesome-free-5.15.4-web/css/all.min.css" rel="stylesheet" />
+<script src="jquery-3.7.1/jquery-3.7.1.min.js" />
+<link rel="icon" href="favico.ico">
+<title>Home</title>
+</head>
+
+<body>
+	<header>
+		<nav class="navbar navbar-light bg-light">
+			<div class="container">
+				<a class="navbar-brand" href="#">
+					<img src="cash_register_512.png" alt="" width="30" height="24">
+				</a>
+				asasasas
+			</div>
+		</nav>
+		<a href="#">Click to hide me too</a>
+<p>Here is another paragraph</p>
+	</header>
+	<main class="container">
+		<div class="row">
+			<div class="col-lg-3 col-sm-6 mt-1">
+				<div class="card bg-info text-white">
+					<div class="card-body">
+						<span class="row">
+							<span class="icon text-white-50">
+								<i class="fas fa-chart-pie"></i>
+							</span>
+							<h6 class="card-title ml-1">Valor Total</h6>
+						</span>
+						<h2 class="lead">R$ [[${valorTotal}]]</h2>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-sm-6 mt-1">
+				<div class="card bg-success text-white">
+					<div class="card-body">
+						<span class="row">
+							<span class="icon text-white-50">
+								<i class="fas fa-file-invoice-dollar"></i>
+							</span>
+							<h6 class="card-title ml-1">Receitas</h6>
+						</span>
+						<h2 class="lead">R$ [[${totalReceitas}]]</h2>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-sm-6 mt-1">
+				<div class="card bg-warning text-white">
+					<div class="card-body">
+						<span class="row">
+							<span class="icon text-white-50">
+								<i class="fas fa-lock"></i>
+							</span>
+							<h6 class="card-title ml-1">Bloqueios</h6>
+						</span>
+						<h2 class="lead">R$ [[${totalBloqueios}]]</h2>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-sm-6 mt-1">
+				<div class="card bg-danger text-white">
+					<div class="card-body">
+						<span class="row">
+							<span class="icon text-white-50">
+								<i class="fas fa-wallet"></i>
+							</span>
+							<h6 class="card-title ml-1">Despesas</h6>
+						</span>
+						<h2 class="lead">R$ [[${totalDespesas}]]</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-lg-12 col-sm-6 mt-1">
+				<nav class="navbar navbar-light bg-light">
+					<form class="container-fluid" action="get">
+						<div class="navbar-brand">
+							<input name="tipo" type="text" placeholder="Digite o que deseja" class="form-control me-2">
+						</div>
+						<div class="d-flex">
+							<button class="btn btn-outline-success" type="submit">Adicionar</button>
+						</div>
+					</form>
+				</nav>
+			</div>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Tipo</th>
+						<th scope="col">Status</th>
+						<th scope="col">Valor</th>
+						<th>.</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="caixa : ${caixas}">
+						<td th:text="${caixa.id}">Item 1</td>
+						<td th:text="${caixa.tipo}">Item 1</td>
+						<td th:text="${caixa.status}">Ativo</td>
+						<td th:text="${'R$ ' + caixa.valor}">R$ 100,00</td>
+						<td>
+							<a th:href="@{/excluir/{id}(id=${caixa.id})}" class="btn btn-danger"
+								onclick="return confirmExclusao()">Excluir</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	</main>
+	<footer class="container">
+		<p class="m-0 text-center">
+			Copyright &copy;
+			2025
+		</p>
+	</footer>
+	
+	<script>
+		function confirmExclusao() {
+			return confirm('Confirma?');
+		}
+		$( "p" ).hide();
+$( "a" ).on( "click", function( event ) {
+  event.preventDefault();
+  $( this ).hide();
+});
+	</script>
+	<script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js" />
+</body>
+
+</html>
