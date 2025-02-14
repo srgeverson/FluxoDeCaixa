@@ -47,6 +47,13 @@ public class UsuarioModel {
 	@OneToMany(mappedBy = "usuario")
 	private List<SituacaoModel> situacoesCriadas;
 
+	public UsuarioModel() {
+	}
+	
+	public UsuarioModel(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

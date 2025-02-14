@@ -29,6 +29,13 @@ public class SituacaoModel {
 	@OneToMany(mappedBy = "situacao")
 	private List<CaixaModel> caixas;
 
+	public SituacaoModel() {
+	}
+	
+	public SituacaoModel(StatusEnum statusEnum) {
+		this.setId(statusEnum);
+	}
+	
 	public StatusEnum getId() {
 		return id;
 	}

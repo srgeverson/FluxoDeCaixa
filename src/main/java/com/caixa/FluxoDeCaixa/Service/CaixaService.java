@@ -26,4 +26,20 @@ public class CaixaService {
 	public List<CaixaModel> buscarPorTipo(String tipo) {
 		return dao.findByTipoContainingIgnoreCase(tipo);
 	}
+
+	public boolean existe(Long id) {
+		return dao.existsById(id);
+	}
+
+	public void apagar(Long id) {
+		dao.deleteById(id);
+	}
+
+	public void salvar(CaixaModel caixa) {
+		dao.save(caixa);
+	}
+
+	public CaixaModel buscarPorId(Long id) {
+		return dao.getReferenceById(id);
+	}
 }

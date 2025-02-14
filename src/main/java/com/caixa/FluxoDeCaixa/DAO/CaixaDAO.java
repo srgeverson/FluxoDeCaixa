@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.caixa.FluxoDeCaixa.Models.CaixaModel;
 
 @Repository
-public interface CaixaDAO extends CustomJpaDAO<CaixaModel, Integer> {
+public interface CaixaDAO extends CustomJpaDAO<CaixaModel, Long> {
 
 	List<CaixaModel> findByTipoContainingIgnoreCase(String tipo);
 
