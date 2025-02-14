@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: "FluxoDeCaixa"
+  datasource:
+    url: "jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:1433};databaseName=${DB_NAME:db_teste};encrypt=true;trustServerCertificate=true;applicationName=FluxoDeCaixa;"
+    username: ${DB_USERNAME:user_teste}
+    password: ${DB_PASSWORD:@Pt12345678}
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    show-sql: ${SHOW_SQL:true}
+server:
+  port: ${SERVER_PORT:8088}
