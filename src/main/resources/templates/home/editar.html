@@ -1,78 +1,22 @@
-<html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="'Geverson Souza">
-<meta name="description" content="Fluxo de Caixa">
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{main.html}">
 
-<link href="../bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet" />
-<link href="../fontawesome-free-5.15.4-web/css/all.min.css" rel="stylesheet" />
-<link rel="icon" href="../favicon.ico">
-<title>Editar</title>
-<script src="../jquery/jquery-3.7.1.min.js"></script>
-<script src="../jquery/jquery-1.14.13.mask.js"></script>
-<script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
-<script src="../popperjs/popper-core-2.9.2.min.js"></script>
-<script src="../bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
-<script>
-	$(document).ready(function () {
-		// Example starter JavaScript for disabling form submissions if there are invalid fields
-		(function () {
-			'use strict'
+<head>
+	<title>Alterar</title>
+	<script>
+		$(document).ready(function () {
+			validarForm();
 
-			// Fetch all the forms we want to apply custom Bootstrap validation styles to
-			var forms = document.querySelectorAll('.needs-validation')
-
-			// Loop over them and prevent submission
-			Array.prototype.slice.call(forms)
-				.forEach(function (form) {
-					form.addEventListener('submit', function (event) {
-						if (!form.checkValidity()) {
-							event.preventDefault()
-							event.stopPropagation()
-						}
-
-						form.classList.add('was-validated')
-					}, false)
-				})
-		})()
-
-		$("#valor").mask('#.###.##0,00', {
-			reverse: true
+			valorMoeda('valor');
 		});
-
-		$("#teste").click(function (event) {
-			event.preventDefault(); // Impede o envio padrão do formulário
-
-			// Captura os dados do formulário
-			var dadosFormulario = $('form').serializeArray();
-
-			// Exibe os dados no console
-			console.log(dadosFormulario);
-
-			/*
-			Exemplo: acessar valores específicos
-			var nome = $("#nome").val();
-			var email = $("#email").val();
-			var idade = $("#idade").val();
-			alert("Nome: " + nome + "\nEmail: " + email + "\nIdade: " + idade);
-			*/
-
-		})
-	});
-</script>
+		function confirmExclusao() {
+			return confirm("Tem certeza que desaja excluir?");
+		}
+	</script>
 </head>
 
 <body>
-	<header>
-		<nav class="navbar navbar-light bg-light">
-			<div class="container">
-				<a class="navbar-brand" href="#">
-					<img src="../cash_register_512.png" alt="" width="30" height="24">
-				</a>
-			</div>
-		</nav>
-	</header>
-	<main class="container">
+	<main class="container" layout:fragment="content">
 		<br />
 		<div class="row">
 			<form class="row g-3 needs-validation" action="/alterar" method="post" novalidate>

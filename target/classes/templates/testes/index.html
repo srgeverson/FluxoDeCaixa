@@ -1,31 +1,15 @@
 <!DOCTYPE html>
-<html lang="pt">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="'Geverson Souza">
-<meta name="description" content="Fluxo de Caixa">
-<script src="jquery-3.7.1/jquery-3.7.1.min.js"></script>
-<title>Teste</title>
-<script>
-        $(document).ready(function() {
-            $("#paragrafo").click(function() {
-                $("#paragrafo").fadeToggle(); // Alterna a exibição da caixa com animação
-            });
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{main.html}">
 
-            $("#paragrafo").hover(
-                function() {
-                    $(this).css("background-color", "orange");
-                },
-                function() {
-                    $(this).css("background-color", "lightblue");
-                }
-            );
-        });
-    </script>
+<head>
+	<title>Content page</title>
+	
 </head>
 
 <body>
-	<p id="paragrafo">Olá mundo!</p>
+	<main layout:fragment="content">
+		<p>This is a paragraph from the content page</p>
+	</main>
 </body>
-<script src="jquery-3.7.1/jquery-3.7.1.min.js" />
+
 </html>

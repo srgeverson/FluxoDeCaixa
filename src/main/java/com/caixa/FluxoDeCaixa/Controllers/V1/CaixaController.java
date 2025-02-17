@@ -1,4 +1,4 @@
-package com.caixa.FluxoDeCaixa.Controllers;
+package com.caixa.FluxoDeCaixa.Controllers.V1;
 
 import java.text.DecimalFormat;
 import java.time.OffsetDateTime;
@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.caixa.FluxoDeCaixa.Controllers.DTO.CaixaDTO;
@@ -22,7 +23,8 @@ import com.caixa.FluxoDeCaixa.Service.CaixaService;
 import com.caixa.FluxoDeCaixa.Service.SituacaoService;
 
 @Controller
-public class HomeController {
+@RequestMapping(path = "/v1/caixas")
+public class CaixaController {
 
 	@Autowired
 	private CaixaService caixaService;
@@ -30,14 +32,14 @@ public class HomeController {
 	private SituacaoService situacaoService;
 	private static final UsuarioModel USUARIO = new UsuarioModel(1L);
 
-	public HomeController(CaixaService service, SituacaoService situacaoService) {
+	public CaixaController(CaixaService service, SituacaoService situacaoService) {
 		super();
 		this.caixaService = service;
 		this.situacaoService = situacaoService;
 	}
 
-	@GetMapping("/")
-	public String index(Model model, @RequestParam(required = false) String tipo) {
+	@GetMapping
+	public String listar(Model model, @RequestParam(required = false) String tipo) {
 		var caixasDTO = new ArrayList<CaixaDTO>();
 		List<CaixaModel> caixas;
 
