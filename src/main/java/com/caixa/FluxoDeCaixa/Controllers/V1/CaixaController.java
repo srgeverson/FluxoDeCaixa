@@ -96,7 +96,7 @@ public class CaixaController {
 		} else {
 			System.out.println("Registro com ID " + id + " não encontrado.");
 		}
-		return "redirect:/";
+		return "redirect:/v1/caixas";
 	}
 
 	@GetMapping("/editar/{id}")
@@ -120,7 +120,7 @@ public class CaixaController {
 		caixa.setUsuario(USUARIO);
 		caixaService.salvar(caixa);
 
-		return "redirect:/";
+		return "redirect:/v1/caixas";
 	}
 
 	@PostMapping("/alterar")
@@ -137,6 +137,6 @@ public class CaixaController {
 		caixa.setDataOperacao(OffsetDateTime.now());
 		caixaService.salvar(caixa);
 
-		return "redirect:/";
+		return "redirect:/v1/caixas";
 	}
 }

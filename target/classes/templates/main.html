@@ -8,18 +8,18 @@
 	<meta name="author" content="Geverson Souza">
 	<meta name="description" content="Fluxo de Caixa">
 	<link rel="icon" href="favicon.ico">
-	<link href="../fontawesome-free-5.15.4-web/css/all.min.css" rel="stylesheet" />
+	<link th:href="@{/fontawesome-free-5.15.4-web/css/all.min.css}" rel="stylesheet" />
 	<!-- Bootstrap CSS -->
-	<link href="../bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="../css/geral.css" rel="stylesheet" />
+	<link th:href="@{/bootstrap-5.0.2-dist/css/bootstrap.min.css}" rel="stylesheet" />
+	<link th:href="@{/css/geral.css}" rel="stylesheet" />
 
 	<!-- JQuery -->
-	<script src="../jquery/jquery-3.7.1.min.js"></script>
-	<script src="../jquery/jquery-1.14.13.mask.js"></script>
-	<script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
-	<script src="../popperjs/popper-core-2.9.2.min.js"></script>
-	<script src="../bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
-	<script src="../js/geral.js"></script>
+	<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/jquery/jquery-1.14.13.mask.js}"></script>
+	<script th:src="@{/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/popperjs/popper-core-2.9.2.min.js}"></script>
+	<script th:src="@{/bootstrap-5.0.2-dist/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/geral.js}"></script>
 	<title>Início</title>
 </head>
 
@@ -36,10 +36,10 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link" aria-current="page" href="/v1/situacoes">Lista de Status</a>
+							<a class="nav-link disabled" aria-current="page" href="/v1/situacoes">Lista de Status</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/v1/usuarios">Lista de Usuários</a>
+							<a class="nav-link disabled" href="/v1/usuarios">Lista de Usuários</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/v1/caixas">Caixa</a>
