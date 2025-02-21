@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Geverson Souza">
 	<meta name="description" content="Fluxo de Caixa">
-	<link rel="icon" href="favicon.ico">
+	<link rel="icon" th:href="@{/favicon.ico}">
 	<link th:href="@{/fontawesome-free-5.15.4-web/css/all.min.css}" rel="stylesheet" />
 	<!-- Bootstrap CSS -->
 	<link th:href="@{/bootstrap-5.0.2-dist/css/bootstrap.min.css}" rel="stylesheet" />
@@ -54,6 +54,27 @@
 			</div>
 		</nav>
 	</header>
+	<div class="container">
+		<div class=" row">
+			<div th:if="${operacao != null}" class="col-lg-12 mt-1">
+				<div th:switch="${operacao.operacao}">
+					<div th:case="'1'" class="alert alert-success alert-dismissible fade show" role="alert">
+						<strong>Operação realizada com sucesso!</strong> [[${operacao.mensagemOperacao}]]
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+					<div th:case="'2'" class="alert alert-warning alert-dismissible fade show" role="alert">
+						<strong>Operação não permitida!</strong> [[${operacao.mensagemOperacao}]]
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+					<div th:case="'3'" class="alert alert-danger alert-dismissible fade show" role="alert">
+						<strong>Operação falhou!</strong> [[${operacao.mensagemOperacao}]]
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
 	<main class="container" layout:fragment="content">
 
 	</main>
@@ -63,6 +84,23 @@
 			2025
 		</p>
 	</footer>
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalTitle">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>...</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+					<a href="#" id="modalAction" class="btn btn-danger"><i class="fas fa-trash"> Excluir</i></a>
+				</div>
+			</div>
+		</div>
 </body>
 
 </html>

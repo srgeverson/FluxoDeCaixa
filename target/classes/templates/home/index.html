@@ -8,9 +8,19 @@
 			validarForm();
 
 			valorMoeda('valor');
+
 		});
-		function confirmExclusao() {
-			return confirm("Tem certeza que desaja excluir?");
+
+		function confirmExclusao(uri, id) {
+			let modelTitle = $('#modalTitle');
+			modelTitle.text('Confirma a operação');
+
+			let modalBodyInput = $('.modal-body p');
+			modalBodyInput.text("Tem certeza que deseja excluir?");
+
+			let modalA = $('#modalAction');
+			let path = `${uri}${id}`;
+			modalA.attr("href", path);
 		}
 	</script>
 </head>
@@ -105,18 +115,22 @@
 						<td th:text="${'R$ ' + caixa.valor}">R$ 100,00</td>
 						<td>
 							<a title="Editar dados!" th:href="@{/v1/caixas/editar/{id}(id=${caixa.id})}"
-								class="btn btn-warning btn-circle btn-sm" style="margin: 5px">
+								class="btn btn-warning" style="margin: 5px">
 								<i class="fas fa-edit"></i>
 							</a>
-							<a title="Excluir dados!" th:href="@{/v1/caixas/excluir/{id}(id=${caixa.id})}"
-								onclick="return confirmExclusao()" class="btn btn-danger btn-circle btn-sm "
-								style="margin: 5px"><i class="fas fa-trash"></i></a>
-
+							<a title="Excluir dados!" href="#"
+								th:onclick="confirmExclusao('/v1/caixas/excluir/',[[${caixa.id}]])"
+								class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
+								style="margin: 5px"><i class="fas fa-trash">
+								</i>
+							</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 	</main>
+
+	</div>
 </body>
 
 </html>

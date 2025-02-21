@@ -18,6 +18,7 @@ import com.caixa.FluxoDeCaixa.Controllers.DTO.CaixaDTO;
 import com.caixa.FluxoDeCaixa.Models.CaixaModel;
 import com.caixa.FluxoDeCaixa.Models.SituacaoModel;
 import com.caixa.FluxoDeCaixa.Models.UsuarioModel;
+import com.caixa.FluxoDeCaixa.Models.DTO.OperacaoDTO;
 import com.caixa.FluxoDeCaixa.Models.Type.StatusEnum;
 import com.caixa.FluxoDeCaixa.Service.CaixaService;
 import com.caixa.FluxoDeCaixa.Service.SituacaoService;
@@ -31,11 +32,13 @@ public class CaixaController {
 	private static final DecimalFormat FORMATAR_VALOR_EM_MOEDA = new DecimalFormat("#,##0.00");
 	private SituacaoService situacaoService;
 	private static final UsuarioModel USUARIO = new UsuarioModel(1L);
+	private final OperacaoDTO operacao;
 
 	public CaixaController(CaixaService service, SituacaoService situacaoService) {
 		super();
 		this.caixaService = service;
 		this.situacaoService = situacaoService;
+		this.operacao = new OperacaoDTO();
 	}
 
 	@GetMapping
@@ -79,6 +82,7 @@ public class CaixaController {
 		model.addAttribute("totalReceitas", totalReceitasFormatado);
 		model.addAttribute("totalBloqueios", totalBloqueiosFormatado);
 		model.addAttribute("totalDespesas", totalDespesasFormatado);
+		model.addAttribute("operacao", operacao);
 		return "home/index";
 	}
 
@@ -91,16 +95,28 @@ public class CaixaController {
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable Long id) {
-		if (caixaService.existe(id)) {
-			caixaService.apagar(id);
-		} else {
-			System.out.println("Registro com ID " + id + " não encontrado.");
+		try {
+
+			if (caixaService.existe(id)) {
+				caixaService.apagar(id);
+				operacao.setOperacao("1");
+				operacao.setMensagemOperacao("Registro apagado com sucesso!");
+			} else {
+				operacao.setOperacao("2");
+				operacao.setMensagemOperacao("Registro não encontrado!");
+			}
+
+		} catch (Exception e) {
+			operacao.setOperacao("3");
+			operacao.setMensagemOperacao("Falha ao apagar registro!");
+			operacao.setDetalhesOperacao(e.getMessage());
 		}
 		return "redirect:/v1/caixas";
 	}
 
 	@GetMapping("/editar/{id}")
 	public String editar(Model model, @PathVariable Long id) {
+		
 		var caixa = caixaService.buscarPorId(id);
 		model.addAttribute("caixa", caixa);
 		var list = situacaoService.listarTudo();
@@ -111,32 +127,44 @@ public class CaixaController {
 	@PostMapping("/cadastrar")
 	public String cadastrar(@RequestParam("tipo") String tipo, @RequestParam("valor") String valor,
 			@RequestParam("situacao") int situacao, Model model) {
-
-		CaixaModel caixa = new CaixaModel();
-		caixa.setTipo(tipo);
-		caixa.setValor(Double.valueOf(valor.replace(".", "").replace(',', '.').trim()));
-		var status = new SituacaoModel(StatusEnum.values()[situacao]);
-		caixa.setSituacao(status);
-		caixa.setUsuario(USUARIO);
-		caixaService.salvar(caixa);
-
+		try {
+			CaixaModel caixa = new CaixaModel();
+			caixa.setTipo(tipo);
+			caixa.setValor(Double.valueOf(valor.replace(".", "").replace(',', '.').trim()));
+			var status = new SituacaoModel(StatusEnum.values()[situacao]);
+			caixa.setSituacao(status);
+			caixa.setUsuario(USUARIO);
+			caixaService.salvar(caixa);
+			operacao.setOperacao("1");
+			operacao.setMensagemOperacao("Registro cadastrado com sucesso!");
+		} catch (Exception e) {
+			operacao.setOperacao("3");
+			operacao.setMensagemOperacao("Falha ao salvar registro!");
+			operacao.setDetalhesOperacao(e.getMessage());
+		}
 		return "redirect:/v1/caixas";
 	}
 
 	@PostMapping("/alterar")
 	public String alterar(@RequestParam("id") Long id, @RequestParam("tipo") String tipo,
 			@RequestParam("valor") String valor, @RequestParam("situacao") int situacao, Model model) {
-
-		CaixaModel caixa = new CaixaModel();
-		caixa.setId(id);
-		caixa.setTipo(tipo);
-		caixa.setValor(Double.valueOf(valor.replace(".", "").replace(',', '.').trim()));
-		var status = new SituacaoModel(StatusEnum.values()[situacao]);
-		caixa.setSituacao(status);
-		caixa.setUsuario(USUARIO);
-		caixa.setDataOperacao(OffsetDateTime.now());
-		caixaService.salvar(caixa);
-
+		try {
+			CaixaModel caixa = new CaixaModel();
+			caixa.setId(id);
+			caixa.setTipo(tipo);
+			caixa.setValor(Double.valueOf(valor.replace(".", "").replace(',', '.').trim()));
+			var status = new SituacaoModel(StatusEnum.values()[situacao]);
+			caixa.setSituacao(status);
+			caixa.setUsuario(USUARIO);
+			caixa.setDataOperacao(OffsetDateTime.now());
+			caixaService.salvar(caixa);
+			operacao.setOperacao("1");
+			operacao.setMensagemOperacao("Registro alterado com sucesso!");
+		} catch (Exception e) {
+			operacao.setOperacao("3");
+			operacao.setMensagemOperacao("Falha ao alterar registro!");
+			operacao.setDetalhesOperacao(e.getMessage());
+		}
 		return "redirect:/v1/caixas";
 	}
 }
