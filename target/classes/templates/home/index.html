@@ -1,87 +1,32 @@
-<html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="'Geverson Souza">
-<meta name="description" content="Fluxo de Caixa">
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{main.html}">
 
-<link href="../bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet" />
-<link href="../fontawesome-free-5.15.4-web/css/all.min.css" rel="stylesheet" />
-<link rel="icon" href="../favicon.ico">
-<title>Home</title>
-<script src="../jquery/jquery-3.7.1.min.js"></script>
-<script src="../jquery/jquery-1.14.13.mask.js"></script>
-<script src="../bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
-<script src="../popperjs/popper-core-2.9.2.min.js"></script>
-<script src="../bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
-<script>
-	$(document).ready(function () {
-		// Example starter JavaScript for disabling form submissions if there are invalid fields
-		(function () {
-			'use strict'
+<head>
+	<title>Caixa</title>
+	<script>
+		$(document).ready(function () {
+			validarForm();
 
-			// Fetch all the forms we want to apply custom Bootstrap validation styles to
-			var forms = document.querySelectorAll('.needs-validation')
+			valorMoeda('valor');
 
-			// Loop over them and prevent submission
-			Array.prototype.slice.call(forms)
-				.forEach(function (form) {
-					form.addEventListener('submit', function (event) {
-						if (!form.checkValidity()) {
-							event.preventDefault()
-							event.stopPropagation()
-						}
-
-						form.classList.add('was-validated')
-					}, false)
-				})
-		})()
-
-		$("#valor").mask('#.##0,00', {
-			reverse: true
 		});
 
-		$("#teste").click(function (event) {
-			event.preventDefault(); // Impede o envio padrão do formulário
+		function confirmExclusao(uri, id) {
+			let modelTitle = $('#modalTitle');
+			modelTitle.text('Confirma a operação');
 
-			// Captura os dados do formulário
-			var dadosFormulario = $('form').serializeArray();
+			let modalBodyInput = $('.modal-body p');
+			modalBodyInput.text("Tem certeza que deseja excluir?");
 
-			// Exibe os dados no console
-			console.log(dadosFormulario);
-
-			/*
-			Exemplo: acessar valores específicos
-			var nome = $("#nome").val();
-			var email = $("#email").val();
-			var idade = $("#idade").val();
-			alert("Nome: " + nome + "\nEmail: " + email + "\nIdade: " + idade);
-			*/
-
-		})
-		$(".dropstart").click(function () {
-			var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
-			var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-				return new bootstrap.Dropdown(dropdownToggleEl)
-			})
-		})
-	});
-	function confirmExclusao(){
-		return confirm("Tem certeza que desaja excluir?");
-	}
-</script>
+			let modalA = $('#modalAction');
+			let path = `${uri}${id}`;
+			modalA.attr("href", path);
+		}
+	</script>
 </head>
 
 <body>
-	<header>
-		<nav class="navbar navbar-light bg-light">
-			<div class="container">
-				<a class="navbar-brand" href="#">
-					<img src="cash_register_512.png" alt="" width="30" height="24">
-				</a>
-			</div>
-		</nav>
-	</header>
-	<main class="container">
+	<main class="container" layout:fragment="content">
 		<div class="row">
 			<div class="col-lg-3 col-sm-6 mt-1">
 				<div class="card bg-info text-white">
@@ -146,7 +91,7 @@
 								class="form-control me-2">
 						</div>
 						<div class="d-flex">
-							<a href="/adicionar" class="btn btn-outline-success">Adicionar</a>
+							<a href="/v1/caixas/adicionar" class="btn btn-outline-success">Adicionar</a>
 						</div>
 					</form>
 				</nav>
@@ -169,26 +114,23 @@
 						<td th:text="${caixa.status}">Ativo</td>
 						<td th:text="${'R$ ' + caixa.valor}">R$ 100,00</td>
 						<td>
-							<a title="Editar dados!"
-								th:href="@{/editar/{id}(id=${caixa.id})}"
-								class="btn btn-warning btn-circle btn-sm" style="margin: 5px">
+							<a title="Editar dados!" th:href="@{/v1/caixas/editar/{id}(id=${caixa.id})}"
+								class="btn btn-warning" style="margin: 5px">
 								<i class="fas fa-edit"></i>
 							</a>
-							<a title="Excluir dados!" th:href="@{/excluir/{id}(id=${caixa.id})}"
-								onclick="return confirmExclusao()" class="btn btn-danger btn-circle btn-sm "
-								style="margin: 5px"><i class="fas fa-trash"></i></a>
-
+							<a title="Excluir dados!" href="#"
+								th:onclick="confirmExclusao('/v1/caixas/excluir/',[[${caixa.id}]])"
+								class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
+								style="margin: 5px"><i class="fas fa-trash">
+								</i>
+							</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 	</main>
-	<footer class="container">
-		<p class="m-0 text-center">
-			Copyright &copy;
-			2025
-		</p>
-	</footer>
+
+	</div>
 </body>
 
 </html>

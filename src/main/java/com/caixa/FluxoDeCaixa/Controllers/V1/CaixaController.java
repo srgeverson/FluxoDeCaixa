@@ -1,4 +1,4 @@
-package com.caixa.FluxoDeCaixa.Controllers;
+package com.caixa.FluxoDeCaixa.Controllers.V1;
 
 import java.text.DecimalFormat;
 import java.time.OffsetDateTime;
@@ -11,33 +11,38 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.caixa.FluxoDeCaixa.Controllers.DTO.CaixaDTO;
 import com.caixa.FluxoDeCaixa.Models.CaixaModel;
 import com.caixa.FluxoDeCaixa.Models.SituacaoModel;
 import com.caixa.FluxoDeCaixa.Models.UsuarioModel;
+import com.caixa.FluxoDeCaixa.Models.DTO.OperacaoDTO;
 import com.caixa.FluxoDeCaixa.Models.Type.StatusEnum;
 import com.caixa.FluxoDeCaixa.Service.CaixaService;
 import com.caixa.FluxoDeCaixa.Service.SituacaoService;
 
 @Controller
-public class HomeController {
+@RequestMapping(path = "/v1/caixas")
+public class CaixaController {
 
 	@Autowired
 	private CaixaService caixaService;
 	private static final DecimalFormat FORMATAR_VALOR_EM_MOEDA = new DecimalFormat("#,##0.00");
 	private SituacaoService situacaoService;
 	private static final UsuarioModel USUARIO = new UsuarioModel(1L);
+	private final OperacaoDTO operacao;
 
-	public HomeController(CaixaService service, SituacaoService situacaoService) {
+	public CaixaController(CaixaService service, SituacaoService situacaoService) {
 		super();
 		this.caixaService = service;
 		this.situacaoService = situacaoService;
+		this.operacao = new OperacaoDTO();
 	}
 
-	@GetMapping("/")
-	public String index(Model model, @RequestParam(required = false) String tipo) {
+	@GetMapping
+	public String listar(Model model, @RequestParam(required = false) String tipo) {
 		var caixasDTO = new ArrayList<CaixaDTO>();
 		List<CaixaModel> caixas;
 
@@ -77,6 +82,7 @@ public class HomeController {
 		model.addAttribute("totalReceitas", totalReceitasFormatado);
 		model.addAttribute("totalBloqueios", totalBloqueiosFormatado);
 		model.addAttribute("totalDespesas", totalDespesasFormatado);
+		model.addAttribute("operacao", operacao);
 		return "home/index";
 	}
 
@@ -89,16 +95,28 @@ public class HomeController {
 
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable Long id) {
-		if (caixaService.existe(id)) {
-			caixaService.apagar(id);
-		} else {
-			System.out.println("Registro com ID " + id + " não encontrado.");
+		try {
+
+			if (caixaService.existe(id)) {
+				caixaService.apagar(id);
+				operacao.setOperacao("1");
+				operacao.setMensagemOperacao("Registro apagado com sucesso!");
+			} else {
+				operacao.setOperacao("2");
+				operacao.setMensagemOperacao("Registro não encontrado!");
+			}
+
+		} catch (Exception e) {
+			operacao.setOperacao("3");
+			operacao.setMensagemOperacao("Falha ao apagar registro!");
+			operacao.setDetalhesOperacao(e.getMessage());
 		}
-		return "redirect:/";
+		return "redirect:/v1/caixas";
 	}
 
 	@GetMapping("/editar/{id}")
 	public String editar(Model model, @PathVariable Long id) {
+		
 		var caixa = caixaService.buscarPorId(id);
 		model.addAttribute("caixa", caixa);
 		var list = situacaoService.listarTudo();
@@ -109,32 +127,44 @@ public class HomeController {
 	@PostMapping("/cadastrar")
 	public String cadastrar(@RequestParam("tipo") String tipo, @RequestParam("valor") String valor,
 			@RequestParam("situacao") int situacao, Model model) {
-
-		CaixaModel caixa = new CaixaModel();
-		caixa.setTipo(tipo);
-		caixa.setValor(Double.valueOf(valor.replace(".", "").replace(',', '.').trim()));
-		var status = new SituacaoModel(StatusEnum.values()[situacao]);
-		caixa.setSituacao(status);
-		caixa.setUsuario(USUARIO);
-		caixaService.salvar(caixa);
-
-		return "redirect:/";
+		try {
+			CaixaModel caixa = new CaixaModel();
+			caixa.setTipo(tipo);
+			caixa.setValor(Double.valueOf(valor.replace(".", "").replace(',', '.').trim()));
+			var status = new SituacaoModel(StatusEnum.values()[situacao]);
+			caixa.setSituacao(status);
+			caixa.setUsuario(USUARIO);
+			caixaService.salvar(caixa);
+			operacao.setOperacao("1");
+			operacao.setMensagemOperacao("Registro cadastrado com sucesso!");
+		} catch (Exception e) {
+			operacao.setOperacao("3");
+			operacao.setMensagemOperacao("Falha ao salvar registro!");
+			operacao.setDetalhesOperacao(e.getMessage());
+		}
+		return "redirect:/v1/caixas";
 	}
 
 	@PostMapping("/alterar")
 	public String alterar(@RequestParam("id") Long id, @RequestParam("tipo") String tipo,
 			@RequestParam("valor") String valor, @RequestParam("situacao") int situacao, Model model) {
-
-		CaixaModel caixa = new CaixaModel();
-		caixa.setId(id);
-		caixa.setTipo(tipo);
-		caixa.setValor(Double.valueOf(valor.replace(".", "").replace(',', '.').trim()));
-		var status = new SituacaoModel(StatusEnum.values()[situacao]);
-		caixa.setSituacao(status);
-		caixa.setUsuario(USUARIO);
-		caixa.setDataOperacao(OffsetDateTime.now());
-		caixaService.salvar(caixa);
-
-		return "redirect:/";
+		try {
+			CaixaModel caixa = new CaixaModel();
+			caixa.setId(id);
+			caixa.setTipo(tipo);
+			caixa.setValor(Double.valueOf(valor.replace(".", "").replace(',', '.').trim()));
+			var status = new SituacaoModel(StatusEnum.values()[situacao]);
+			caixa.setSituacao(status);
+			caixa.setUsuario(USUARIO);
+			caixa.setDataOperacao(OffsetDateTime.now());
+			caixaService.salvar(caixa);
+			operacao.setOperacao("1");
+			operacao.setMensagemOperacao("Registro alterado com sucesso!");
+		} catch (Exception e) {
+			operacao.setOperacao("3");
+			operacao.setMensagemOperacao("Falha ao alterar registro!");
+			operacao.setDetalhesOperacao(e.getMessage());
+		}
+		return "redirect:/v1/caixas";
 	}
 }

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-br" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Geverson Souza">
+	<meta name="description" content="Fluxo de Caixa">
+	<link rel="icon" th:href="@{/favicon.ico}">
+	<link th:href="@{/fontawesome-free-5.15.4-web/css/all.min.css}" rel="stylesheet" />
+	<!-- Bootstrap CSS -->
+	<link th:href="@{/bootstrap-5.0.2-dist/css/bootstrap.min.css}" rel="stylesheet" />
+	<link th:href="@{/css/geral.css}" rel="stylesheet" />
+
+	<!-- JQuery -->
+	<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/jquery/jquery-1.14.13.mask.js}"></script>
+	<script th:src="@{/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/popperjs/popper-core-2.9.2.min.js}"></script>
+	<script th:src="@{/bootstrap-5.0.2-dist/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/geral.js}"></script>
+	<title>Início</title>
+</head>
+
+<body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/v1">Fluxo de Caixa</a>
+				<button type="button" class="navbar-toggler" data-bs-toggle="collapse"
+					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link disabled" aria-current="page" href="/v1/situacoes">Lista de Status</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" href="/v1/usuarios">Lista de Usuários</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/v1/caixas">Caixa</a>
+						</li>
+					</ul>
+					<form class="d-flex">
+						<input type="search" name="buscar" placeholder="Buscar" class="form-control me-2"
+							aria-label="Search">
+						<button class="btn btn-outline-success" type="submit">Buscar</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		<div class=" row">
+			<div th:if="${operacao != null}" class="col-lg-12 mt-1">
+				<div th:switch="${operacao.operacao}">
+					<div th:case="'1'" class="alert alert-success alert-dismissible fade show" role="alert">
+						<strong>Operação realizada com sucesso!</strong> [[${operacao.mensagemOperacao}]]
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+					<div th:case="'2'" class="alert alert-warning alert-dismissible fade show" role="alert">
+						<strong>Operação não permitida!</strong> [[${operacao.mensagemOperacao}]]
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+					<div th:case="'3'" class="alert alert-danger alert-dismissible fade show" role="alert">
+						<strong>Operação falhou!</strong> [[${operacao.mensagemOperacao}]]
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<main class="container" layout:fragment="content">
+
+	</main>
+	<footer class="container fixed-bottom">
+		<p class="m-0 text-center">
+			Copyright &copy;
+			2025
+		</p>
+	</footer>
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalTitle">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>...</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+					<a href="#" id="modalAction" class="btn btn-danger"><i class="fas fa-trash"> Excluir</i></a>
+				</div>
+			</div>
+		</div>
+</body>
+
+</html>
